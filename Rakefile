@@ -52,10 +52,11 @@ namespace :search_and_replace do
   end
 
   def search_and_replace directory, search, replace
+    FileUtils.mkdir_p("output/#{directory}")
     filenames = Dir.glob("#{directory}/**")
     filenames.each do |filename|
       if File.directory?(filename)
-        FileUtils.r_p("output/#{filename}")
+        FileUtils.mkdir_p("output/#{filename}")
         search_and_replace(filename, search, replace) 
         next
       end
