@@ -23,6 +23,15 @@ namespace :search_and_replace do
     puts "search: #{options[:search]}"
     puts "replace_with: #{options[:replace_with]}"
   end
+
+  def search_and_replace_in_file filename, search
+    count = 0
+    file = File.open(filename)
+    file.readlines.each do |line|
+      count += 1 if line.match(/#{Regexp.quote(search)}/) 
+    end
+    count
+  end
 end
 
 namespace :search_and_count do 
@@ -63,7 +72,7 @@ namespace :search_and_count do
     args = o.order!(ARGV) {}
     o.parse!(args)
     puts "Searching for #{options[:search]} in inside #{options[:file]}"
-    count = serach_and_count_in_file(options[:file], options[:search])
+    count = search_and_count_in_file(options[:file], options[:search])
     puts "There are #{count} occurences of #{options[:search]}"
   end
 
@@ -75,12 +84,12 @@ namespace :search_and_count do
         search_and_count(filename, search) 
         next
       end
-      count += serach_and_count_in_file(filename, search)
+      count += search_and_count_in_file(filename, search)
     end
     count
   end
 
-  def serach_and_count_in_file filename, search
+  def search_and_count_in_file filename, search
     count = 0
     file = File.open(filename)
     file.readlines.each do |line|
