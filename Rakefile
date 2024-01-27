@@ -28,7 +28,7 @@ end
 namespace :search_and_count do 
   desc "Reads files in a directory and counts occurences of a given string in each file."
   task :run do
-    puts "---Search and Count---"
+    puts "---Search and Count in Directory---"
 
     options = {}
     o = OptionParser.new
@@ -69,13 +69,13 @@ namespace :search_and_count do
 
   def search_and_count directory, search
     count = 0
-    filenames = Dir.entries(directory)
+    filenames = Dir.glob("#{directory}/**")
     filenames.each do |filename|
-      next if File.directory?("#{directory}/#{filename}")
-      file = File.open("#{directory}/#{filename}")
-      file.readlines.each do |line|
-        count += 1 if line.match(/#{Regexp.quote(search)}/) 
+      if File.directory?(filename)
+        search_and_count(filename, search) 
+        next
       end
+      count += serach_and_count_in_file(filename, search)
     end
     count
   end
