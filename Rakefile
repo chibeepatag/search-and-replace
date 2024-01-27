@@ -27,6 +27,7 @@ namespace :search_and_replace do
     puts "Complete! See ./output"
   end
 
+  desc "Reads the file and replaces search param with replace_with param"
   task :file do 
     puts "Search and Replace in File"
     options = {}
